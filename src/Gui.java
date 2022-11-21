@@ -28,7 +28,7 @@ public class Gui extends JPanel implements ActionListener {
 
     // Panel 2
     MatrixFields matrixInputFields;
-    Matrix matrixD, matrixR;
+    Matrix matrixD;
     JPanel leftPanel, rightPanel, upPanel, centerPanel, eqDPanel;
     JButton okDButton, clearDButton;
     JTextField sizeDField;
@@ -98,6 +98,7 @@ public class Gui extends JPanel implements ActionListener {
         panel2.setLayout(new BorderLayout());
         panel2.add(upPanel, BorderLayout.PAGE_START); upPanel.add(sizeDField);
         panel2.add(centerPanel, BorderLayout.CENTER); centerPanel.setLayout(new GridBagLayout());
+        panel2.add(okDButton, BorderLayout.PAGE_END);
         centerPanel.add(leftPanel, setLocation(0, 0, GridBagConstraints.HORIZONTAL, 1, 1));
         centerPanel.add(eqDPanel, setLocation(1, 0, GridBagConstraints.HORIZONTAL, 0.5, 1));
         centerPanel.add(rightPanel, setLocation(2, 0, GridBagConstraints.HORIZONTAL, 0.4, 1));
@@ -169,9 +170,7 @@ public class Gui extends JPanel implements ActionListener {
             displayAnsMatrix();
         }else if(e.getSource() == clearButton) {
             size1Field.setText(""); size2Field.setText("");
-            matrix1Panel.removeAll();
-            matrix2Panel.removeAll();
-            matrix3Panel.removeAll();
+            matrix1Panel.removeAll(); matrix2Panel.removeAll(); matrix3Panel.removeAll();
             matrix1 = null;
             matrix2 = null;
             matrix3 = null;
@@ -186,18 +185,14 @@ public class Gui extends JPanel implements ActionListener {
                 }
             }
         }else if(e.getSource() == okDButton) {
-            matrix3Panel.removeAll();
-            matrix3Panel.setLayout(new GridBagLayout());
-            for(int i = 0; i<matrix3.m; i++) {
-                for(int j = 0; j<matrix3.n; j++) {
-                    matrix3Panel.add(new JLabel(Double.toString(matrix3.grid.get(i).get(j))), setLocation(j, i, GridBagConstraints.HORIZONTAL, 1, 1));
-                }
-            }
-        }else if(e.getSource() == clearDButton) {
-            matrixD = null; matrixR = null;
-            leftPanel.removeAll();
             rightPanel.removeAll();
-            upPanel.removeAll();
+            rightPanel.setLayout(new GridLayout(1, 1));
+            matrixD = new Matrix(matrixInputFields.m, matrixInputFields.n);
+            matrixD.setGrid(matrixInputFields);
+            rightPanel.add(new JLabel(Double.toString(matrixD.determinant())));
+        }else if(e.getSource() == clearDButton) {
+            matrixD = null;
+            leftPanel.removeAll(); rightPanel.removeAll(); upPanel.removeAll();
             sizeDField.setText(""); sizeDField.requestFocus();
         }
         this.repaint();

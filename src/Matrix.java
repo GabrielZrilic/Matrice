@@ -84,4 +84,40 @@ public class Matrix {
             }
         }
     }
+
+    public double determinant() {
+        if(grid.size() != grid.get(0).size()) return 0;
+        double s1 = 0, s2 = 0, c;
+        int a;
+        
+        if(n == 2) return grid.get(0).get(0)*grid.get(1).get(1) - grid.get(0).get(1)*grid.get(1).get(0);
+
+        for(int i = 0; i<n; i++) {
+            a = i;
+            c = 1.0;
+            for(int j = 0; j<n; j++) {
+                System.out.print(grid.get(j).get(a));
+                c *= grid.get(j).get(a);
+                a++;
+                if(a == n) a = 0;
+            }
+            System.out.println(" ");
+            s1 += c;
+        }
+
+        for(int i = 0; i<n; i++) {
+            a = i;
+            c = 1.0;
+            for(int j = n-1; j>-1; j--) {
+                System.out.print(grid.get(j).get(a));
+                c *= grid.get(j).get(a);
+                a++;
+                if(a == n) a = 0;
+            }
+            System.out.println(" ");
+            s2 += c;
+        }
+        System.out.println(s1 + " " + s2);
+        return s1 - s2;
+    }
 }
