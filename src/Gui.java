@@ -24,7 +24,7 @@ public class Gui extends JPanel implements ActionListener {
     JLabel eqLabel;
     JComboBox<String> operatorBox;
     MatrixFields matrix1Fields, matrix2Fields;
-    Matrix matrix1, matrix2;
+    Matrix matrix1, matrix2, matrix3;
     
 
 
@@ -102,6 +102,8 @@ public class Gui extends JPanel implements ActionListener {
         copy3Button.addActionListener(this);
         paste1Button.addActionListener(this);
         paste2Button.addActionListener(this);
+        size1Field.addActionListener(this);
+        size2Field.addActionListener(this);
     }
 
     private GridBagConstraints setLocation(int x, int y, int fill, double weightx, double weighty) {
@@ -114,14 +116,54 @@ public class Gui extends JPanel implements ActionListener {
         return c;
     }
 
-    
+    private void displayAnsMatrix() {
+        matrix3Panel.removeAll();
+        matrix3Panel.setLayout(new GridBagLayout());
+        for(int i = 0; i<matrix3.m; i++) {
+            for(int j = 0; j<matrix3.n; j++) {
+                matrix3Panel.add(new JLabel(Double.toString(matrix3.grid.get(i).get(j))), setLocation(i, j, GridBagConstraints.HORIZONTAL, 1, 1));
+            }
+        }
+    }
+
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == size1Field) {
-
+            matrix1Panel.removeAll();
+            matrix1Panel.setLayout(new GridBagLayout());
+            matrix1Fields = new MatrixFields(size1Field);
+            for(int i = 0; i<matrix1Fields.m; i++) {
+                for(int j = 0; j<matrix1Fields.n; j++) {
+                    matrix1Panel.add(matrix1Fields.grid.get(i).get(j), setLocation(j, i, GridBagConstraints.HORIZONTAL, 1, 1));
+                }
+            }
+            this.repaint();
         }else if(e.getSource() == size2Field) {
+            matrix2Panel.removeAll();
+            matrix2Panel.setLayout(new GridBagLayout());
+            matrix2Fields = new MatrixFields(size2Field);
+            for(int i = 0; i<matrix2Fields.m; i++) {
+                for(int j = 0; j<matrix2Fields.n; j++) {
+                    matrix2Panel.add(matrix2Fields.grid.get(i).get(j), setLocation(j, i, GridBagConstraints.HORIZONTAL, 1, 1));
+                }
+            }
+            this.repaint();
+        }else if(e.getSource() == okButton) {
+            matrix1 = new Matrix(matrix1Fields.m, matrix1Fields.n);
+            matrix2 = new Matrix(matrix2Fields.m, matrix2Fields.n);
+            matrix1.setGrid(matrix1Fields);
+            matrix2.setGrid(matrix2Fields);
+            matrix3 = new Matrix(matrix1.m, matrix1.n);
 
+
+            if(operatorBox.getSelectedItem() == "+") matrix3.sum(matrix1, matrix2);
+            else if(operatorBox.getSelectedItem() == "-") matrix3.subtract(matrix1, matrix2);
+            else if(operatorBox.getSelectedItem() == "*") {matrix3 = new Matrix(matrix1.m, matrix2.n); matrix3.multiply(matrix1, matrix2);}
+
+            System.out.println(matrix3.grid);
+            displayAnsMatrix();
+            this.repaint();
         }
     }
 
