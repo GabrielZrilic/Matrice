@@ -75,9 +75,6 @@ public class Matrix {
     public void multiply(Matrix matrix1, Matrix matrix2) {
         double a = 0;
 
-        System.out.println(matrix1.grid);
-        System.out.println(matrix2.grid);
-
         if(matrix1.n != matrix2.m) {
             JOptionPane.showMessageDialog(new JFrame(), "Pogrešne dimenzije");
             return;
@@ -89,7 +86,6 @@ public class Matrix {
                 for(int k = 0; k<matrix1.n; k++) {
                     a += matrix1.grid.get(i).get(k) * matrix2.grid.get(k).get(j);
                 }
-                System.out.println(grid);
                 grid.get(i).set(j, a);
             }
         }

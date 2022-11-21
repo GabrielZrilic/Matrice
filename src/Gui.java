@@ -161,7 +161,6 @@ public class Gui extends JPanel implements ActionListener {
             else if(operatorBox.getSelectedItem() == "-") matrix3.subtract(matrix1, matrix2);
             else if(operatorBox.getSelectedItem() == "*") {matrix3 = new Matrix(matrix1.m, matrix2.n); matrix3.multiply(matrix1, matrix2);}
 
-            System.out.println(matrix3.grid);
             displayAnsMatrix();
             this.repaint();
         }
