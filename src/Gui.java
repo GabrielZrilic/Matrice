@@ -27,8 +27,9 @@ public class Gui extends JPanel implements ActionListener {
     Matrix matrix1, matrix2, matrix3;
 
     // Panel 2
+    MatrixFields matrixInputFields;
     Matrix matrixD, matrixR;
-    JPanel leftPanel, rightPanel, upPanel;
+    JPanel leftPanel, rightPanel, upPanel, centerPanel, eqDPanel;
     JButton okDButton, clearDButton;
     JTextField sizeDField;
     JLabel eqDLabel;
@@ -89,15 +90,19 @@ public class Gui extends JPanel implements ActionListener {
     }
 
     private void setPanel2() {
-        leftPanel = new JPanel(); rightPanel = new JPanel(); upPanel = new JPanel();
+        leftPanel = new JPanel(); rightPanel = new JPanel(); upPanel = new JPanel(); centerPanel = new JPanel(); eqDPanel = new JPanel();
         okDButton = new JButton("U redu"); clearDButton = new JButton("Izbriši");
         eqDLabel = new JLabel("="); eqDLabel.setFont(new Font("Arial", Font.PLAIN, 30));
         sizeDField = new JTextField(8);
 
         panel2.setLayout(new BorderLayout());
         panel2.add(upPanel, BorderLayout.PAGE_START); upPanel.add(sizeDField);
-        panel2.add(leftPanel, BorderLayout.LINE_START);
-        panel2.add(rightPanel, BorderLayout.LINE_END);
+        panel2.add(centerPanel, BorderLayout.CENTER); centerPanel.setLayout(new GridBagLayout());
+        centerPanel.add(leftPanel, setLocation(0, 0, GridBagConstraints.HORIZONTAL, 1, 1));
+        centerPanel.add(eqDPanel, setLocation(1, 0, GridBagConstraints.HORIZONTAL, 0.5, 1));
+        centerPanel.add(rightPanel, setLocation(2, 0, GridBagConstraints.HORIZONTAL, 0.4, 1));
+
+        eqDPanel.setLayout(new GridLayout(1, 1)); eqDPanel.add(eqDLabel);
     }
 
     private void declareListeners() {
@@ -140,7 +145,7 @@ public class Gui extends JPanel implements ActionListener {
                     matrix1Panel.add(matrix1Fields.grid.get(i).get(j), setLocation(j, i, GridBagConstraints.HORIZONTAL, 1, 1));
                 }
             }
-            this.repaint();
+            size2Field.requestFocus();
         }else if(e.getSource() == size2Field) {
             matrix2Panel.removeAll();
             matrix2Panel.setLayout(new GridBagLayout());
@@ -150,7 +155,6 @@ public class Gui extends JPanel implements ActionListener {
                     matrix2Panel.add(matrix2Fields.grid.get(i).get(j), setLocation(j, i, GridBagConstraints.HORIZONTAL, 1, 1));
                 }
             }
-            this.repaint();
         }else if(e.getSource() == okButton) {
             matrix1 = new Matrix(matrix1Fields.m, matrix1Fields.n);
             matrix2 = new Matrix(matrix2Fields.m, matrix2Fields.n);
@@ -163,14 +167,39 @@ public class Gui extends JPanel implements ActionListener {
             else if(operatorBox.getSelectedItem() == "*") {matrix3 = new Matrix(matrix1.m, matrix2.n); matrix3.multiply(matrix1, matrix2);}
 
             displayAnsMatrix();
-            this.repaint();
         }else if(e.getSource() == clearButton) {
+            size1Field.setText(""); size2Field.setText("");
             matrix1Panel.removeAll();
             matrix2Panel.removeAll();
             matrix3Panel.removeAll();
             matrix1 = null;
             matrix2 = null;
             matrix3 = null;
+            size1Field.requestFocus();
+        }else if(e.getSource() == sizeDField) {
+            leftPanel.removeAll();
+            leftPanel.setLayout(new GridBagLayout());
+            matrixInputFields = new MatrixFields(sizeDField);
+            for(int i = 0; i<matrixInputFields.m; i++) {
+                for(int j = 0; j<matrixInputFields.n; j++) {
+                    leftPanel.add(matrixInputFields.grid.get(i).get(j), setLocation(j, i, GridBagConstraints.HORIZONTAL, 1, 1));
+                }
+            }
+        }else if(e.getSource() == okDButton) {
+            matrix3Panel.removeAll();
+            matrix3Panel.setLayout(new GridBagLayout());
+            for(int i = 0; i<matrix3.m; i++) {
+                for(int j = 0; j<matrix3.n; j++) {
+                    matrix3Panel.add(new JLabel(Double.toString(matrix3.grid.get(i).get(j))), setLocation(j, i, GridBagConstraints.HORIZONTAL, 1, 1));
+                }
+            }
+        }else if(e.getSource() == clearDButton) {
+            matrixD = null; matrixR = null;
+            leftPanel.removeAll();
+            rightPanel.removeAll();
+            upPanel.removeAll();
+            sizeDField.setText(""); sizeDField.requestFocus();
         }
+        this.repaint();
     }
 }
