@@ -23,6 +23,8 @@ public class Gui extends JPanel implements ActionListener {
     JButton okButton, clearButton, copy1Button, copy2Button, copy3Button, paste1Button, paste2Button;
     JLabel eqLabel;
     JComboBox<String> operatorBox;
+    MatrixFields matrix1Fields, matrix2Fields;
+    Matrix matrix1, matrix2;
     
 
 
@@ -112,8 +114,15 @@ public class Gui extends JPanel implements ActionListener {
         return c;
     }
 
+    
+
     @Override
     public void actionPerformed(ActionEvent e) {
+        if(e.getSource() == size1Field) {
+
+        }else if(e.getSource() == size2Field) {
+
+        }
     }
 
 }
