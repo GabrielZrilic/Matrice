@@ -121,7 +121,7 @@ public class Gui extends JPanel implements ActionListener {
         matrix3Panel.setLayout(new GridBagLayout());
         for(int i = 0; i<matrix3.m; i++) {
             for(int j = 0; j<matrix3.n; j++) {
-                matrix3Panel.add(new JLabel(Double.toString(matrix3.grid.get(i).get(j))), setLocation(i, j, GridBagConstraints.HORIZONTAL, 1, 1));
+                matrix3Panel.add(new JLabel(Double.toString(matrix3.grid.get(i).get(j))), setLocation(j, i, GridBagConstraints.HORIZONTAL, 1, 1));
             }
         }
     }
