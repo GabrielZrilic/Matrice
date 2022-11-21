@@ -20,17 +20,21 @@ public class Gui extends JPanel implements ActionListener {
     // Panel 1
     JPanel matrix1Panel, matrix2Panel, matrix3Panel, panelUp, panelDown, panelCenter, panelUpLeft, panelUpRight, operatorPanel, eqPanel;
     JTextField size1Field, size2Field;
-    JButton okButton, clearButton, copy1Button, copy2Button, copy3Button, paste1Button, paste2Button;
+    JButton okButton, clearButton;
     JLabel eqLabel;
     JComboBox<String> operatorBox;
     MatrixFields matrix1Fields, matrix2Fields;
     Matrix matrix1, matrix2, matrix3;
-    
 
+    // Panel 2
+    Matrix matrixD, matrixR;
+    JPanel leftPanel, rightPanel, upPanel;
+    JButton okDButton, clearDButton;
+    JTextField sizeDField;
+    JLabel eqDLabel;
 
     public Gui() {
         super(new GridLayout(1, 1));
-
         setTabs(); setPanel1(); setPanel2();
         declareListeners();
     }
@@ -51,12 +55,10 @@ public class Gui extends JPanel implements ActionListener {
         matrix1Panel = new JPanel(); matrix2Panel = new JPanel(); matrix3Panel = new JPanel(); operatorPanel = new JPanel(); eqPanel = new JPanel(); 
 
         size1Field = new JTextField(10); size2Field = new JTextField(10);
-        copy1Button = new JButton("Kopiraj"); copy2Button = new JButton("Kopiraj"); copy3Button = new JButton("Kopiraj");
-        paste1Button = new JButton("Zalijepi"); paste2Button = new JButton("Zalijepi");
         okButton = new JButton("U redu"); clearButton = new JButton("Izbriši");
         eqLabel = new JLabel("="); eqLabel.setFont(new Font("Arial", Font.PLAIN, 30));
 
-        operatorBox = new JComboBox<String>(new String[] {"+", "-", "*","/"});
+        operatorBox = new JComboBox<String>(new String[] {"+", "-", "*"});
         operatorBox.setFont(new Font("Arial", Font.PLAIN, 30));
 
         panel1.setLayout(new BorderLayout());
@@ -67,16 +69,10 @@ public class Gui extends JPanel implements ActionListener {
         panelUp.add(panelUpLeft, setLocation(0, 0, GridBagConstraints.BOTH, 1, 1));
         panelUpLeft.add(new JLabel("Veličina:"));
         panelUpLeft.add(size1Field);
-        panelUpLeft.add(copy1Button);
-        panelUpLeft.add(paste1Button);
 
         panelUp.add(panelUpRight, setLocation(1, 0, GridBagConstraints.BOTH, 1, 1));
         panelUpRight.add(new JLabel("Veličina:"));
         panelUpRight.add(size2Field);
-        panelUpRight.add(copy2Button);
-        panelUpRight.add(paste2Button);
-
-        panelUp.add(copy3Button, setLocation(2, 0, GridBagConstraints.BOTH, 1, 1));
 
         panelDown.add(okButton); panelDown.add(clearButton);
 
@@ -92,18 +88,26 @@ public class Gui extends JPanel implements ActionListener {
         operatorPanel.add(operatorBox, setLocation(0, 0, GridBagConstraints.NONE, 0, 0));
     }
 
-    private void setPanel2() {}
+    private void setPanel2() {
+        leftPanel = new JPanel(); rightPanel = new JPanel(); upPanel = new JPanel();
+        okDButton = new JButton("U redu"); clearDButton = new JButton("Izbriši");
+        eqDLabel = new JLabel("="); eqDLabel.setFont(new Font("Arial", Font.PLAIN, 30));
+        sizeDField = new JTextField(8);
+
+        panel2.setLayout(new BorderLayout());
+        panel2.add(upPanel, BorderLayout.PAGE_START); upPanel.add(sizeDField);
+        panel2.add(leftPanel, BorderLayout.LINE_START);
+        panel2.add(rightPanel, BorderLayout.LINE_END);
+    }
 
     private void declareListeners() {
         okButton.addActionListener(this);
         clearButton.addActionListener(this);
-        copy1Button.addActionListener(this);
-        copy2Button.addActionListener(this);
-        copy3Button.addActionListener(this);
-        paste1Button.addActionListener(this);
-        paste2Button.addActionListener(this);
         size1Field.addActionListener(this);
         size2Field.addActionListener(this);
+        okDButton.addActionListener(this);
+        clearDButton.addActionListener(this);
+        sizeDField.addActionListener(this);
     }
 
     private GridBagConstraints setLocation(int x, int y, int fill, double weightx, double weighty) {
@@ -112,7 +116,6 @@ public class Gui extends JPanel implements ActionListener {
         c.weightx = weightx; c.weighty = weighty;
         c.gridx = x; c.gridy = y;
         c.fill = fill;
-
         return c;
     }
 
@@ -125,7 +128,6 @@ public class Gui extends JPanel implements ActionListener {
             }
         }
     }
-
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -156,14 +158,19 @@ public class Gui extends JPanel implements ActionListener {
             matrix2.setGrid(matrix2Fields);
             matrix3 = new Matrix(matrix1.m, matrix1.n);
 
-
             if(operatorBox.getSelectedItem() == "+") matrix3.sum(matrix1, matrix2);
             else if(operatorBox.getSelectedItem() == "-") matrix3.subtract(matrix1, matrix2);
             else if(operatorBox.getSelectedItem() == "*") {matrix3 = new Matrix(matrix1.m, matrix2.n); matrix3.multiply(matrix1, matrix2);}
 
             displayAnsMatrix();
             this.repaint();
+        }else if(e.getSource() == clearButton) {
+            matrix1Panel.removeAll();
+            matrix2Panel.removeAll();
+            matrix3Panel.removeAll();
+            matrix1 = null;
+            matrix2 = null;
+            matrix3 = null;
         }
     }
-
 }

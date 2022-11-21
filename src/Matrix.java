@@ -2,7 +2,6 @@ import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.JTextField;
 
 public class Matrix {
     int m, n;
@@ -19,14 +18,10 @@ public class Matrix {
         }
     }
 
-    public void setGrid(int i, int j, MatrixFields n) {
-        grid.get(i).set(j, n.getTextField(i, j));
-    }
-
     public void setGrid(MatrixFields n) {
         for(int i = 0; i<n.m; i++) {
             for(int j = 0; j<n.n; j++) {
-                setGrid(i, j, n);
+                grid.get(i).set(j, n.getTextField(i, j));
             }
         }
     }
@@ -70,7 +65,6 @@ public class Matrix {
             }
         }
     }
-
 
     public void multiply(Matrix matrix1, Matrix matrix2) {
         double a = 0;

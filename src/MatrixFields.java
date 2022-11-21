@@ -32,18 +32,6 @@ public class MatrixFields {
             }
         }
     }
-    
-    public MatrixFields() {
-        grid = new ArrayList<ArrayList<JTextField>>();
-    }
 
-    public double getTextField(int i, int j) {
-        return Double.parseDouble(grid.get(i).get(j).getText());
-    }
-
-    public void clear() {
-        grid.clear();
-    }
-
-    
+    public double getTextField(int i, int j) { return Double.parseDouble(grid.get(i).get(j).getText()); }
 }
